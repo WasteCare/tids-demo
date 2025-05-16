@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-wc {
+  background: rgba(0, 0, 0, 0) linear-gradient(180deg, #042637 0%, #004864 100%) 0% 0% no-repeat
+    padding-box;
+}
