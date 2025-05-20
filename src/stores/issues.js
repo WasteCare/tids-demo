@@ -21,6 +21,7 @@ export const useIssuesStore = defineStore('issues', {
       departments: new Set(),
     }),
     search: ref(''),
+    issueIsOpen: ref(false),
   }),
 
   getters: {

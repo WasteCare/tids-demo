@@ -2,7 +2,7 @@
 //import DefaultView from './DefaultView.vue';
 import GalleryModule from '../components/GalleryModule.vue'
 import ActivityModule from '@/components/ActivityModule.vue';
-import { CalendarDaysIcon, LockOpenIcon, LockClosedIcon, ArrowRightCircleIcon } from '@heroicons/vue/20/solid'
+import { CalendarDaysIcon, LockOpenIcon, LockClosedIcon, ArrowRightCircleIcon, ArrowUturnLeftIcon } from '@heroicons/vue/20/solid'
 import { ArrowsUpDownIcon } from '@heroicons/vue/24/outline'
 import AttachmentsComponent from '@/components/AttachmentsComponent.vue';
 import EmphasisWord from '@/components/EmphasisWord.vue';
@@ -20,6 +20,8 @@ const props = defineProps({
 
 const issue = ref(store.getIssueById(parseInt(props.id, 10)))
 issue.value.unseenUpdates = 0
+store.issueIsOpen = true
+//store.taskListOpen = false
 
 let updates = ref([...issue.value.updates].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)))
 let sortAscending = true
@@ -36,24 +38,31 @@ function sortUpdates() {
 <template>
 
 
-  <aside v-if="issue != null" class="sticky top-0 shrink-0 w-full bg-white border-b border-gray-200 z-10">
+  <aside v-if="issue != null && !store.taskListOpen"
+    class="sticky top-0 shrink-0 w-full bg-white border-b border-gray-200 z-10">
 
     <div class="flex flex-row justify-between shrink-0  px-4 py-6 sm:px-6 lg:pr-8 xl:pr-6">
 
-      <div class="space-x-5 flex flex-row">
-        <div class="flex items-center space-x-2">
-          <LockOpenIcon v-if="issue.open" class="h-6 w-5 text-green-500"></LockOpenIcon>
-          <span v-if="issue.open" class="text-sm font-medium text-green-700">Open {{
-            issue.type }}</span>
-          <LockClosedIcon v-if="!issue.open" class="h-6 w-5 text-gray-400">
-          </LockClosedIcon>
-          <span v-if="!issue.open" class="text-sm font-medium text-gray-500">Closed {{
-            issue.type }}</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <CalendarDaysIcon class="h-6 w-5 text-gray-400" aria-hidden="true" />
-          <span class="text-sm font-medium text-gray-500">Opened {{ issue.relativeTime
-          }}</span>
+      <div class="space-x-5 flex flex-row w-full">
+        <div class="flex items-center justify-between w-full">
+          <button class="lg:hidden" @click="store.issueIsOpen = false">
+            <ArrowUturnLeftIcon class="size-5 text-gray-400" aria-hidden="true" />
+          </button>
+          <div class="flex items-center space-x-2">
+            <LockOpenIcon v-if="issue.open" class="h-6 w-5 text-green-500"></LockOpenIcon>
+            <span v-if="issue.open" class="text-sm font-medium text-green-700">Open {{
+              issue.type }}</span>
+            <LockClosedIcon v-if="!issue.open" class="h-6 w-5 text-gray-400">
+            </LockClosedIcon>
+            <span v-if="!issue.open" class="text-sm font-medium text-gray-500">Closed {{
+              issue.type }}</span>
+
+            <div class="flex items-center space-x-2">
+              <CalendarDaysIcon class="h-6 w-5 text-gray-400" aria-hidden="true" />
+              <span class="text-sm font-medium text-gray-500">Opened {{ issue.relativeTime
+              }}</span>
+            </div>
+          </div>
         </div>
 
       </div>
